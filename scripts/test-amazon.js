@@ -2,6 +2,9 @@
 
 const productGrid = document.querySelector(`.products-grid`);
 
+// state variable
+let option = 1;
+
 // Saving the data
 
 // Generating HTML
@@ -34,7 +37,7 @@ products.forEach((product) => {
           )}</div>
 
           <div class="product-quantity-container">
-            <select class="qty-${product.id}">
+            <select class="qty-selector">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -66,10 +69,9 @@ productGrid.innerHTML = productsHTML;
 // Event Listener to the addCart Button
 const addCart = document.querySelectorAll(`.add-product-cart`);
 const cartQty = document.querySelector(`.cart-quantity`);
-const selectId = document.querySelector(`qty-${product.id}`);
 cartQty.textContent = 0;
 
-addCart.forEach((cartBtn) => {
+addCart.forEach((cartBtn, i) => {
   cartBtn.addEventListener(`click`, (e) => {
     const productId = cartBtn.dataset.productId;
 
@@ -81,21 +83,26 @@ addCart.forEach((cartBtn) => {
       }
     });
     if (matchingItem) {
-      matchingItem.quantity += 1;
+      matchingItem.quantity += option;
     } else {
       cart.push({
         productId: productId,
-        quantity: 1,
+        quantity: option,
       });
     }
 
     console.log(cart);
+  });
+});
 
-    // find the total products at cart
-    let total = selectId.value;
-    cart.forEach((item) => {
-      total += item.quantity;
-    });
-    cartQty.textContent = total;
+// Selecting product quantity to be added to the shopping cart.
+
+const selectBtn = document.querySelectorAll(`.qty-selector`);
+
+// Adding event listener to the select button.
+
+selectBtn.forEach((select) => {
+  select.addEventListener(`click`, (e) => {
+    option = Number(select.value);
   });
 });
