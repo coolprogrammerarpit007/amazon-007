@@ -460,14 +460,23 @@ const products = [
     keywords: ["kitchen", "kitchen towels", "tissues"],
   },
   {
-    id: "bc2847e9-5323-403f-b7cf-57fde044a955",
-    image: "images/products/men-cozy-fleece-zip-up-hoodie-red.jpg",
-    name: "Men's Full-Zip Hooded Fleece Sweatshirt",
+    id: "arpit007-5323-403f-b7cf-57fde044a955",
+    image: "images/products/umbrella.jpg",
+    name: "Men's All In Weather Umbrella",
     rating: {
       stars: 4.5,
-      count: 3157,
+      count: 157,
     },
-    priceCents: 2400,
-    keywords: ["sweaters", "hoodies", "apparel", "mens"],
+    priceCents: 200,
+  },
+  {
+    id: "coolprogrammer007-5323-403f-b7cf-57fde044a955",
+    image: "images/products/backpack.jpg",
+    name: "American Touriter BagPack",
+    rating: {
+      stars: 4.5,
+      count: 957,
+    },
+    priceCents: 14750,
   },
 ];

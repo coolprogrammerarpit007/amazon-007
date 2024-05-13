@@ -65,7 +65,7 @@ products.forEach((product) => {
 });
 
 productGrid.innerHTML = productsHTML;
-
+const addedCheckMark = document.querySelectorAll(`.added-to-cart`);
 // Event Listener to the addCart Button
 const addCart = document.querySelectorAll(`.add-product-cart`);
 const cartQty = document.querySelector(`.cart-quantity`);
@@ -92,6 +92,14 @@ addCart.forEach((cartBtn, i) => {
     }
 
     console.log(cart);
+
+    // showing checkmark when product added to the cart.
+    addedCheckMark[i].style.opacity = `1`;
+
+    // After 2 seconds checkMark removed from the cart.
+    const clearCheck = setTimeout((e) => {
+      addedCheckMark[i].style.opacity = `0`;
+    }, "2000");
   });
 });
 
