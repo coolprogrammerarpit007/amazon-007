@@ -1,5 +1,10 @@
 `use strict`;
 
+// importing data from file
+import { cart } from "./../data/cart.js";
+import { products } from "../data/products.js";
+
+// ***************************************
 const productGrid = document.querySelector(`.products-grid`);
 
 // Generating products/html
@@ -61,9 +66,21 @@ products.forEach((product) => {
 });
 
 // State variables
+// **********************************
+// this is for select element for selecting the item quantity to be added to the cart.
 let itemQty = 0;
 
+// ***********************************
+
 productGrid.innerHTML = productHTML;
+
+// storing the cart quantity
+const cartQty = document.querySelector(`.cart-quantity`);
+
+cartQty.textContent = 0;
+
+// storing the addedToCart checkmark
+const checkMark = document.querySelectorAll(`.added-to-cart`);
 
 // storing the add to cart buttons
 
@@ -79,8 +96,18 @@ addCartBtn.forEach((addBtn, i) => {
     const productId = addBtn.dataset.productId;
 
     // Now checking if product already in cart, if it is then increasing the quantity.
+    // Showing the checkmark
+    checkMark[i].style.opacity = "1";
 
+    // removing after 2 seconds
+    const myTimeOut = setTimeout(() => {
+      checkMark[i].style.opacity = "0";
+    }, "2000");
+
+    // ****************************
     let matchingItem;
+    // when a same product added to cart
+    // *****************************
     cart.forEach((cartItem) => {
       if (cartItem.productId === productId) {
         matchingItem = cartItem;
@@ -97,6 +124,18 @@ addCartBtn.forEach((addBtn, i) => {
       });
     }
 
+    // calculating the total quantity of cart
+
+    // this is for total quantity at the cart.
+    let totalCartQuantity = 0;
+    // *****************************
+
+    cart.forEach((cartItem) => {
+      totalCartQuantity += cartItem.qty;
+    });
+
+    cartQty.textContent = totalCartQuantity;
+
     console.log(cart);
   });
 });
@@ -106,8 +145,8 @@ addCartBtn.forEach((addBtn, i) => {
 const selectBtns = document.querySelectorAll(`select`);
 
 selectBtns.forEach((selectBtn) => {
-  itemQty = 1;
-  selectBtn.addEventListener(`change`, function (e) {
+  itemQty = 0;
+  selectBtn.addEventListener(`click`, function (e) {
     itemQty = selectBtn.value;
   });
 });
