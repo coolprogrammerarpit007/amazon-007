@@ -2,19 +2,15 @@
 
 const productGrid = document.querySelector(`.products-grid`);
 
-// state variable
-let option = 1;
+// Generating products/html
+let productHTML = ``;
 
-// Saving the data
-
-// Generating HTML
-let productsHTML = ``;
 products.forEach((product) => {
-  productsHTML += `<div class="product-container">
+  productHTML += `<div class="product-container">
           <div class="product-image-container">
             <img
               class="product-image"
-              src="${product.image}"
+              src="./../${product.image}"
             />
           </div>
 
@@ -37,7 +33,7 @@ products.forEach((product) => {
           )}</div>
 
           <div class="product-quantity-container">
-            <select class="qty-selector">
+            <select class="qty-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -58,59 +54,60 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary add-product-cart" data-product-id="${
+          <button class="add-to-cart-button button-primary" data-product-id="${
             product.id
-          }">Add to Cart</button >
+          }">Add to Cart</button>
         </div>`;
 });
 
-productGrid.innerHTML = productsHTML;
-const addedCheckMark = document.querySelectorAll(`.added-to-cart`);
-// Event Listener to the addCart Button
-const addCart = document.querySelectorAll(`.add-product-cart`);
-const cartQty = document.querySelector(`.cart-quantity`);
-cartQty.textContent = 0;
+// State variables
+let itemQty = 0;
 
-addCart.forEach((cartBtn, i) => {
-  cartBtn.addEventListener(`click`, (e) => {
-    const productId = cartBtn.dataset.productId;
+productGrid.innerHTML = productHTML;
 
-    // check if product already exists in cart
+// storing the add to cart buttons
+
+const addCartBtn = document.querySelectorAll(`.add-to-cart-button`);
+
+// Adding the event listener to the add to cart button
+
+addCartBtn.forEach((addBtn, i) => {
+  addBtn.addEventListener(`click`, function (e) {
+    // Adding products to the cart
+
+    // unique id for the every product
+    const productId = addBtn.dataset.productId;
+
+    // Now checking if product already in cart, if it is then increasing the quantity.
+
     let matchingItem;
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
+    cart.forEach((cartItem) => {
+      if (cartItem.productId === productId) {
+        matchingItem = cartItem;
       }
     });
+
     if (matchingItem) {
-      matchingItem.quantity += option;
+      matchingItem.qty = matchingItem.qty + Number(itemQty);
     } else {
       cart.push({
         productId: productId,
-        quantity: option,
+        productName: products[i].name,
+        qty: Number(itemQty),
       });
     }
 
     console.log(cart);
-
-    // showing checkmark when product added to the cart.
-    addedCheckMark[i].style.opacity = `1`;
-
-    // After 2 seconds checkMark removed from the cart.
-    const clearCheck = setTimeout((e) => {
-      addedCheckMark[i].style.opacity = `0`;
-    }, "2000");
   });
 });
 
-// Selecting product quantity to be added to the shopping cart.
+// Selecting the select btn to selectively select the quantity and updating the quantity of element in the cart.
 
-const selectBtn = document.querySelectorAll(`.qty-selector`);
+const selectBtns = document.querySelectorAll(`select`);
 
-// Adding event listener to the select button.
-
-selectBtn.forEach((select) => {
-  select.addEventListener(`click`, (e) => {
-    option = Number(select.value);
+selectBtns.forEach((selectBtn) => {
+  itemQty = 1;
+  selectBtn.addEventListener(`change`, function (e) {
+    itemQty = selectBtn.value;
   });
 });
