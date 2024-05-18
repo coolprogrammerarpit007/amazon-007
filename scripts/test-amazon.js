@@ -2,6 +2,7 @@
 
 // importing data from file
 import { cart } from "./../data/cart.js";
+import { addCartProducts } from "./../data/cart.js";
 import { products } from "../data/products.js";
 
 // ***************************************
@@ -68,7 +69,10 @@ products.forEach((product) => {
 // State variables
 // **********************************
 // this is for select element for selecting the item quantity to be added to the cart.
-let itemQty = 0;
+export let itemQty = 0;
+let flag = false; // variable to check whether select btn got triggered or not
+
+// *****************************
 
 // ***********************************
 
@@ -82,6 +86,35 @@ cartQty.textContent = 0;
 // storing the addedToCart checkmark
 const checkMark = document.querySelectorAll(`.added-to-cart`);
 
+// ************************************
+// ************************************
+// Function for showing the checkMark
+const showCheckMark = function (i) {
+  // Showing the checkmark
+  checkMark[i].style.opacity = "1";
+
+  // removing after 2 seconds
+  const myTimeOut = setTimeout(() => {
+    checkMark[i].style.opacity = "0";
+  }, "2000");
+};
+
+// **********************************
+// **********************************
+
+// **********************************
+// **********************************
+// function for calculating total cart products
+const totalCartItems = function () {
+  // this is for total quantity at the cart.
+  let totalCartQuantity = 0;
+
+  cart.forEach((cartItem) => {
+    totalCartQuantity += cartItem.qty;
+  });
+
+  cartQty.textContent = totalCartQuantity;
+};
 // storing the add to cart buttons
 
 const addCartBtn = document.querySelectorAll(`.add-to-cart-button`);
@@ -92,61 +125,47 @@ addCartBtn.forEach((addBtn, i) => {
   addBtn.addEventListener(`click`, function (e) {
     // Adding products to the cart
 
+    // if select btn not triggered then update itemQty to 1 else get value from select EL.
+    if (!flag) {
+      itemQty = 1;
+    }
+
     // unique id for the every product
     const productId = addBtn.dataset.productId;
 
-    // Now checking if product already in cart, if it is then increasing the quantity.
-    // Showing the checkmark
-    checkMark[i].style.opacity = "1";
+    // function to be called when product added to the cart
+    showCheckMark(i);
 
-    // removing after 2 seconds
-    const myTimeOut = setTimeout(() => {
-      checkMark[i].style.opacity = "0";
-    }, "2000");
+    // Adding products to cart
+    // **************************
+    addCartProducts(productId, i);
+    // ******************************
+    // ******************************
+    // function to calculating the total quantity of cart
+    totalCartItems();
 
-    // ****************************
-    let matchingItem;
-    // when a same product added to cart
-    // *****************************
-    cart.forEach((cartItem) => {
-      if (cartItem.productId === productId) {
-        matchingItem = cartItem;
-      }
-    });
-
-    if (matchingItem) {
-      matchingItem.qty = matchingItem.qty + Number(itemQty);
-    } else {
-      cart.push({
-        productId: productId,
-        productName: products[i].name,
-        qty: Number(itemQty),
-      });
-    }
-
-    // calculating the total quantity of cart
-
-    // this is for total quantity at the cart.
-    let totalCartQuantity = 0;
-    // *****************************
-
-    cart.forEach((cartItem) => {
-      totalCartQuantity += cartItem.qty;
-    });
-
-    cartQty.textContent = totalCartQuantity;
-
+    // *******************************
+    // *******************************
     console.log(cart);
+
+    // variable got to default variable after product added to the cart.
+    flag = false;
   });
 });
+
+// ***********************************
+// ***********************************
+// ***********************************
+// ***********************************
 
 // Selecting the select btn to selectively select the quantity and updating the quantity of element in the cart.
 
 const selectBtns = document.querySelectorAll(`select`);
 
 selectBtns.forEach((selectBtn) => {
-  itemQty = 0;
   selectBtn.addEventListener(`click`, function (e) {
+    itemQty = 0;
+    flag = true;
     itemQty = selectBtn.value;
   });
 });
