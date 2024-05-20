@@ -1,12 +1,8 @@
 `use strict`;
 
 // importing data from file
-import { cart } from "./../data/cart.js";
-import { addCartProducts } from "./../data/cart.js";
+import { cart, addCartProducts } from "./../data/cart.js";
 import { products } from "../data/products.js";
-
-// ***************************************
-const productGrid = document.querySelector(`.products-grid`);
 
 // Generating products/html
 let productHTML = ``;
@@ -69,13 +65,16 @@ products.forEach((product) => {
 // State variables
 // **********************************
 // this is for select element for selecting the item quantity to be added to the cart.
-export let itemQty = 0;
+let itemQty = 0;
+
 let flag = false; // variable to check whether select btn got triggered or not
 
 // *****************************
 
 // ***********************************
 
+// ***************************************
+const productGrid = document.querySelector(`.products-grid`);
 productGrid.innerHTML = productHTML;
 
 // storing the cart quantity
@@ -138,7 +137,7 @@ addCartBtn.forEach((addBtn, i) => {
 
     // Adding products to cart
     // **************************
-    addCartProducts(productId, i);
+    addCartProducts(productId, i, itemQty);
     // ******************************
     // ******************************
     // function to calculating the total quantity of cart

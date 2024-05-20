@@ -1,13 +1,21 @@
 `use strict`;
 import { products } from "./products.js";
-import { itemQty } from "../scripts/test-amazon.js";
-export const cart = [];
+export const cart = [
+  {
+    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    qty: 2,
+  },
+  {
+    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    qty: 1,
+  },
+];
 
 // ************************************
 // ************************************
 // Function for adding produts to the cart
 
-export const addCartProducts = function (productId, i) {
+export const addCartProducts = function (productId, i, itemQty) {
   // ****************************
   let matchingItem;
   // when a same product added to cart
