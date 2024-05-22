@@ -6,7 +6,6 @@ import { cart } from "./../data/cart.js";
 let productHtml = ``;
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
-
   // finding other product details using the unique product id
   let matchingItem;
   products.forEach((product) => {
