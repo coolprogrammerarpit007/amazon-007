@@ -1,7 +1,7 @@
 `use script`;
 
 import { products } from "../data/products.js";
-import { cart } from "../data/cart.js";
+import { cart, removeFromCart } from "../data/cart.js";
 import { formatCurrency } from "./utils/money.js";
 
 // state variables
@@ -45,7 +45,9 @@ cart.forEach((cartItem) => {
             <span class="update-quantity-link link-primary">
               Update
             </span>
-            <span class="delete-quantity-link link-primary">
+            <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${
+              matchingProduct.id
+            }">
               Delete
             </span>
           </div>
@@ -99,3 +101,15 @@ cart.forEach((cartItem) => {
 
 const orderSummary = document.querySelector(`.js-order-summary`);
 orderSummary.innerHTML = cartSummaryHTML;
+
+// Selecting all delete links and adding event listener to them to remove products from cart.
+
+const deleteBtns = document.querySelectorAll(`.js-delete-link`);
+
+deleteBtns.forEach((deleteBtn) => {
+  deleteBtn.addEventListener(`click`, function (e) {
+    const productId = deleteBtn.dataset.productId;
+    removeFromCart(productId);
+    console.log(cart);
+  });
+});
