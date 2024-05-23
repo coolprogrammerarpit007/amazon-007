@@ -67,6 +67,7 @@ cart.forEach((cartItem) => {
               checked
               class="delivery-option-input"
               name="delivery-option-${matchingProduct.id}"
+              value = "0.00"
             />
             <div>
               <div class="delivery-option-date">Tuesday, June 21</div>
@@ -78,6 +79,7 @@ cart.forEach((cartItem) => {
               type="radio"
               class="delivery-option-input"
               name="delivery-option-${matchingProduct.id}"
+              value="4.99"
             />
             <div>
               <div class="delivery-option-date">Wednesday, June 15</div>
@@ -89,6 +91,7 @@ cart.forEach((cartItem) => {
               type="radio"
               class="delivery-option-input"
               name="delivery-option-${matchingProduct.id}"
+              value = "9.99"
             />
             <div>
               <div class="delivery-option-date">Monday, June 13</div>
@@ -101,6 +104,7 @@ cart.forEach((cartItem) => {
   `;
 });
 
+// Functuanility of order summary of products
 // Storing the order Summary of products
 
 const orderSummary = document.querySelector(`.js-order-summary`);
@@ -122,7 +126,9 @@ deleteBtns.forEach((deleteBtn) => {
     // *************************
     // *************************
     document.querySelector(`.js-cart-item-container-${productId}`).remove();
-    console.log(cart);
+
+    // Function to be called to update prodcts at payment cart
+    totalPaymentProducts();
   });
 });
 
@@ -145,7 +151,9 @@ const updatedCartItems = function () {
   cart.forEach((cartItem) => {
     total += cartItem.qty;
   });
+
   totalCartItems.textContent = `Item Quantity: ${total}`;
+  return total;
 };
 
 updatedCartItems();
@@ -197,6 +205,54 @@ updateBtns.forEach((updateBtn) => {
       // After save btn got clicked both save btn and input should get hidden
       qtyInput.style.display = `none`;
       qtySave.style.display = `none`;
+
+      // Function to be called to update prodcts at payment cart
+      totalPaymentProducts();
     });
   });
 });
+
+// *************************************
+// *************************************
+// *************************************
+// *************************************
+
+// Adding functuanility of product summary
+
+// getting acess to the payment summary
+const paymentSummary = document.querySelector(`.payment-summary`);
+
+// updating total products at the payment summary
+
+const totalPaymentProducts = () => {
+  const totalItems = document.getElementById(`total-items`);
+  totalItems.textContent = `Items (${updatedCartItems()})`;
+};
+
+// Function wil be caled when page loads
+totalPaymentProducts();
+
+// // getting acess to the total money of product
+
+// const totalProductPaymentMoney = document.getElementById(`total-product-money`);
+// console.log(totalProductPaymentMoney.textContent);
+
+// // calculating total money of all the products in the cart.
+// let totalItemMoney = 0;
+
+// // storing all prices of product
+
+// const totalProductPrice = document.querySelectorAll(`.product-price`);
+
+// // Itterating over totalProductPrice and calculating the total price
+
+// totalProductPrice.forEach((product) => {
+//   totalItemMoney =
+//     totalItemMoney + Number(product.textContent.replace(`$`, ``));
+// });
+
+// totalProductPaymentMoney.textContent = totalItemMoney;
+
+// // *************************************
+// // *************************************
+// // handling shipping cost of products
