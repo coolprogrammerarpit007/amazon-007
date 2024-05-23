@@ -38,11 +38,13 @@ cart.forEach((cartItem) => {
           <div class="product-price">$${formatCurrency(
             matchingProduct.priceCents
           )}</div>
-          <div class="product-quantity">
+          <div class="product-quantity product-quantity-${productId}">
             <span> Quantity: <span class="quantity-label">${
               cartItem.qty
             }</span> </span>
-            <span class="update-quantity-link link-primary">
+            <span class="update-quantity-link js-update-link link-primary" data-product-id="${
+              matchingProduct.id
+            }">
               Update
             </span>
             <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${
@@ -112,6 +114,62 @@ deleteBtns.forEach((deleteBtn) => {
     removeFromCart(productId);
     // updating HTML by removing product from cart
 
+    // Calling function to update dom and display updated cart quantity
+    updatedCartItems();
+
+    // *************************
+    // *************************
     document.querySelector(`.js-cart-item-container-${productId}`).remove();
+  });
+});
+
+// ***********************************
+// ***********************************
+
+// ************************************
+// ************************************
+
+// calculating thee total Items at cart and showing it on the checkout page the updated cart quantit
+
+// getting acess to the dom of totalCartItems at the checkout page.
+const totalCartItems = document.querySelector(`.js-total-cart-items`);
+
+// calaculating total Cart Items
+
+// function will calculate total Items at cart and the update it to dom as well.
+const updatedCartItems = function () {
+  let total = 0;
+  cart.forEach((cartItem) => {
+    total += cartItem.qty;
+  });
+  totalCartItems.textContent = `Item Quantity: ${total}`;
+};
+
+updatedCartItems();
+// ***********************************
+// ***********************************
+
+// selecting all update links from the cart
+
+const updateBtns = document.querySelectorAll(`.js-update-link`);
+
+updateBtns.forEach((updateBtn) => {
+  updateBtn.addEventListener(`click`, function (e) {
+    // getting product Id of the update button
+    const productId = updateBtn.dataset.productId;
+
+    // this got created everytime update button got clicked!
+    let html = `
+    <div class="updated-product-quantity">
+      <input class="quantity-input">
+      <span class="save-quantity-link">Save</span>
+    </div>
+    `;
+
+    // Adding input and save element to dom of product-quantity
+    document.querySelector(`.product-quantity-${productId}`).innerHTML += html;
+
+    // Now when user put value in input and click on save button cart-quantity should also be updated in carts array and dom should also be updated.
+    document.querySelector(`.updated-product-quantity`).style.display = `block`;
   });
 });
