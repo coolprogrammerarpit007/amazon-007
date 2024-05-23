@@ -129,6 +129,9 @@ deleteBtns.forEach((deleteBtn) => {
 
     // Function to be called to update prodcts at payment cart
     totalPaymentProducts();
+
+    // function to be called to update the total product cost
+    // totalItemCost();
   });
 });
 
@@ -208,6 +211,9 @@ updateBtns.forEach((updateBtn) => {
 
       // Function to be called to update prodcts at payment cart
       totalPaymentProducts();
+
+      // function to be called to update the total product cost
+      // totalItemCost();
     });
   });
 });
@@ -232,27 +238,26 @@ const totalPaymentProducts = () => {
 // Function wil be caled when page loads
 totalPaymentProducts();
 
-// // getting acess to the total money of product
+// Calculating total money at product cart
+let totalProductsCost = 0; // state variable to calculate totalProductCost
 
-// const totalProductPaymentMoney = document.getElementById(`total-product-money`);
-// console.log(totalProductPaymentMoney.textContent);
+const totalItemCost = () => {
+  cart.forEach((cartItem) => {
+    const productId = cartItem.productId;
 
-// // calculating total money of all the products in the cart.
-// let totalItemMoney = 0;
+    // Normalizing the data, finding the price of the product which matches productId
+    products.forEach((product) => {
+      if (productId === product.id) {
+        // if matches productID then calculate total product cost with multiple by product quantity
+        totalProductsCost =
+          totalProductsCost + (product.priceCents / 100) * cartItem.qty;
+      }
+    });
 
-// // storing all prices of product
+    // updating the dom for the total product cost
+    document.getElementById(`total-product-money`).textContent =
+      totalProductsCost.toFixed(2);
+  });
+};
 
-// const totalProductPrice = document.querySelectorAll(`.product-price`);
-
-// // Itterating over totalProductPrice and calculating the total price
-
-// totalProductPrice.forEach((product) => {
-//   totalItemMoney =
-//     totalItemMoney + Number(product.textContent.replace(`$`, ``));
-// });
-
-// totalProductPaymentMoney.textContent = totalItemMoney;
-
-// // *************************************
-// // *************************************
-// // handling shipping cost of products
+totalItemCost();
