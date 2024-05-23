@@ -47,6 +47,8 @@ cart.forEach((cartItem) => {
             }">
               Update
             </span>
+            <input class="quantity-input quantity-input-${productId}">
+            <span class="save-quantity-link link-primary save-quantity-link-${productId}">Save</span>
             <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${
               matchingProduct.id
             }">
@@ -120,6 +122,7 @@ deleteBtns.forEach((deleteBtn) => {
     // *************************
     // *************************
     document.querySelector(`.js-cart-item-container-${productId}`).remove();
+    console.log(cart);
   });
 });
 
@@ -153,52 +156,47 @@ updatedCartItems();
 
 const updateBtns = document.querySelectorAll(`.js-update-link`);
 
+// Adding loop to update buttons, then adding event to those btns and getting product-id
+
 updateBtns.forEach((updateBtn) => {
   updateBtn.addEventListener(`click`, function (e) {
-    // getting product Id of the update button
     const productId = updateBtn.dataset.productId;
     console.log(productId);
 
-    // this got created everytime update button got clicked!
-    let html = `
-    <div class="updated-product-quantity updated-product-quantity-${productId}">
-      <input class="quantity-input quantity-input-${productId}">
-      <span class="save-quantity-link link-primary save-quantity-link-${productId}">Save</span>
-    </div>
-    `;
+    // when update btn got clicked, make it appear save btn and input btn
 
-    // // Adding input and save element to dom of product-quantity
+    // setting display of both input and save btn display default value.
 
-    // getting acess to the product quantity container
-    const productQty = document.querySelector(`.product-quantity-${productId}`);
+    // getting acess to both save and input btn
 
-    // Adding html to the dom
-    productQty.innerHTML += html;
+    const qtyInput = document.querySelector(`.quantity-input-${productId}`);
+    const qtySave = document.querySelector(`.save-quantity-link-${productId}`);
+    qtyInput.style.display = `initial`;
+    qtySave.style.display = `initial`;
 
-    // Gettiing acess to the save btn
+    // getting acess to the label item qty
 
-    const saveQty = document.querySelector(`.save-quantity-link-${productId}`);
+    const qtyLabel = document.querySelector(`.quantity-label-${productId}`);
 
-    // getting acess to the input element
-    const inputQty = document.querySelector(`.quantity-input-${productId}`);
+    // **********************************
+    // Adding event to the save btn
+    qtySave.addEventListener(`click`, function () {
+      let qtyInputValue = Number(qtyInput.value);
+      console.log(qtyInputValue);
 
-    // getting acess to the quantity label
+      // Now updating that value to cart
 
-    const labelQty = document.querySelector(`.quantity-label-${productId}`);
+      updateItemQtyFromCart(productId, qtyInputValue);
 
-    // Adding event listener to the save btn so that when it got clicked it save the value from input by user, update the cart qty and update the dom as well.
-
-    saveQty.addEventListener(`click`, function () {
-      let qtyItemValue = Number(inputQty.value);
-
-      // updating cart
-      updateItemQtyFromCart(productId, qtyItemValue);
-
-      // updating quantity of product at cart
-      labelQty.textContent = qtyItemValue;
-
-      // calling function to calculate total Items at cart and showing it to the DOM.
+      // Now calling total cart item function to update total cart item value
       updatedCartItems();
+
+      // updating item qty on dom
+      qtyLabel.textContent = qtyInputValue;
+
+      // After save btn got clicked both save btn and input should get hidden
+      qtyInput.style.display = `none`;
+      qtySave.style.display = `none`;
     });
   });
 });

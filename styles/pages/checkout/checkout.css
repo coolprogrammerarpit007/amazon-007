@@ -216,20 +216,11 @@
 
 /* Added Chnges when cart quantity updated button got clicked! */
 
-.hidden {
+.quantity-input {
+  width: 3rem;
   display: none;
 }
 
-.quantity-input {
-  width: 50%;
-  border: 1px solid #000;
-  margin-top: 1rem;
-}
-
 .save-quantity-link {
-  background-color: #000;
-  color: antiquewhite;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  margin-top: 1rem;
+  display: none;
 }
