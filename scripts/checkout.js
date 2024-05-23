@@ -131,7 +131,7 @@ deleteBtns.forEach((deleteBtn) => {
     totalPaymentProducts();
 
     // function to be called to update the total product cost
-    // totalItemCost();
+    totalItemCost();
   });
 });
 
@@ -213,7 +213,7 @@ updateBtns.forEach((updateBtn) => {
       totalPaymentProducts();
 
       // function to be called to update the total product cost
-      // totalItemCost();
+      totalItemCost();
     });
   });
 });
@@ -242,6 +242,8 @@ totalPaymentProducts();
 let totalProductsCost = 0; // state variable to calculate totalProductCost
 
 const totalItemCost = () => {
+  // when function starts to implement make
+  totalProductsCost = 0; // it to default value
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
 
