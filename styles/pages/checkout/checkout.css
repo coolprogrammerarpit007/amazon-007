@@ -216,7 +216,7 @@
 
 /* Added Chnges when cart quantity updated button got clicked! */
 
-.updated-product-quantity {
+.hidden {
   display: none;
 }
 

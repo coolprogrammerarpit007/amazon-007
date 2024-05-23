@@ -1,7 +1,7 @@
 `use script`;
 
 import { products } from "../data/products.js";
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, updateItemQtyFromCart } from "../data/cart.js";
 import { formatCurrency } from "./utils/money.js";
 
 // state variables
@@ -39,9 +39,9 @@ cart.forEach((cartItem) => {
             matchingProduct.priceCents
           )}</div>
           <div class="product-quantity product-quantity-${productId}">
-            <span> Quantity: <span class="quantity-label">${
-              cartItem.qty
-            }</span> </span>
+            <span> Quantity: <span class="quantity-label quantity-label-${productId}">${
+    cartItem.qty
+  }</span> </span>
             <span class="update-quantity-link js-update-link link-primary" data-product-id="${
               matchingProduct.id
             }">
@@ -157,19 +157,48 @@ updateBtns.forEach((updateBtn) => {
   updateBtn.addEventListener(`click`, function (e) {
     // getting product Id of the update button
     const productId = updateBtn.dataset.productId;
+    console.log(productId);
 
     // this got created everytime update button got clicked!
     let html = `
-    <div class="updated-product-quantity">
-      <input class="quantity-input">
-      <span class="save-quantity-link">Save</span>
+    <div class="updated-product-quantity updated-product-quantity-${productId}">
+      <input class="quantity-input quantity-input-${productId}">
+      <span class="save-quantity-link link-primary save-quantity-link-${productId}">Save</span>
     </div>
     `;
 
-    // Adding input and save element to dom of product-quantity
-    document.querySelector(`.product-quantity-${productId}`).innerHTML += html;
+    // // Adding input and save element to dom of product-quantity
 
-    // Now when user put value in input and click on save button cart-quantity should also be updated in carts array and dom should also be updated.
-    document.querySelector(`.updated-product-quantity`).style.display = `block`;
+    // getting acess to the product quantity container
+    const productQty = document.querySelector(`.product-quantity-${productId}`);
+
+    // Adding html to the dom
+    productQty.innerHTML += html;
+
+    // Gettiing acess to the save btn
+
+    const saveQty = document.querySelector(`.save-quantity-link-${productId}`);
+
+    // getting acess to the input element
+    const inputQty = document.querySelector(`.quantity-input-${productId}`);
+
+    // getting acess to the quantity label
+
+    const labelQty = document.querySelector(`.quantity-label-${productId}`);
+
+    // Adding event listener to the save btn so that when it got clicked it save the value from input by user, update the cart qty and update the dom as well.
+
+    saveQty.addEventListener(`click`, function () {
+      let qtyItemValue = Number(inputQty.value);
+
+      // updating cart
+      updateItemQtyFromCart(productId, qtyItemValue);
+
+      // updating quantity of product at cart
+      labelQty.textContent = qtyItemValue;
+
+      // calling function to calculate total Items at cart and showing it to the DOM.
+      updatedCartItems();
+    });
   });
 });

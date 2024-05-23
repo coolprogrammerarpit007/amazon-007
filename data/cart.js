@@ -67,3 +67,20 @@ export const removeFromCart = function (productId) {
   });
   saveToStorage();
 };
+
+// **********************************
+// **********************************
+
+// function for updating product from the cart
+
+export const updateItemQtyFromCart = function (productId, qtyItemValue) {
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
+      cartItem.qty = qtyItemValue;
+    }
+  });
+
+  // Now saving updated qty to the local storage
+
+  saveToStorage();
+};
