@@ -268,6 +268,12 @@ radioInput.forEach((choice) => {
 
     shippingDelivery(productId, deliveryOptionId);
 
+    // *******************************
+    // *******************************
+
+    // *******************************
+    // *******************************
+
     // Now updating the delivery date of product
     const deliveryDate = document.querySelector(`.delivery-date-${productId}`);
     const deliveryOptionDate = document.querySelector(
@@ -276,6 +282,10 @@ radioInput.forEach((choice) => {
 
     // Updating delivery date
     deliveryDate.textContent = `Delivery Date: ${deliveryOptionDate.textContent}`;
+
+    // **********************************
+    // **********************************
+    // **********************************
   });
 });
 
@@ -324,3 +334,8 @@ const totalItemCost = () => {
 };
 
 totalItemCost();
+
+// *****************************************
+// *****************************************
+// *****************************************
+// *****************************************
