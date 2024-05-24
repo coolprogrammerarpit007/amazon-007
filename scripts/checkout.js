@@ -3,6 +3,10 @@
 import { products } from "../data/products.js";
 import { cart, removeFromCart, updateItemQtyFromCart } from "../data/cart.js";
 import { formatCurrency } from "./utils/money.js";
+import { deliveryOptions } from "../data/deliveryOptions.js";
+// importing external library dayjs
+import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+// the above syntax is called default import, when there is only one thing you want to import
 
 // state variables
 let cartSummaryHTML = ``;
@@ -21,9 +25,22 @@ cart.forEach((cartItem) => {
     }
   });
 
+  const deliveryId = cartItem.deliveryOptionId;
+  let deliveryOption;
+
+  deliveryOptions.forEach((option) => {
+    if (deliveryId === option.id) {
+      deliveryOption = option;
+    }
+  });
+
+  const today = dayjs();
+  const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+  const dateStr = deliveryDate.format(`dddd, MMMM, D`);
+
   cartSummaryHTML += `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
-      <div class="delivery-date">Delivery date: Tuesday, June 21</div>
+      <div class="delivery-date">Delivery date: ${dateStr}</div>
 
       <div class="cart-item-details-grid">
         <img
@@ -61,42 +78,7 @@ cart.forEach((cartItem) => {
           <div class="delivery-options-title">
             Choose a delivery option:
           </div>
-          <div class="delivery-option">
-            <input
-              type="radio"
-              checked
-              class="delivery-option-input"
-              name="delivery-option-${matchingProduct.id}"
-              value = "0.00"
-            />
-            <div>
-              <div class="delivery-option-date">Tuesday, June 21</div>
-              <div class="delivery-option-price">FREE Shipping</div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input
-              type="radio"
-              class="delivery-option-input"
-              name="delivery-option-${matchingProduct.id}"
-              value="4.99"
-            />
-            <div>
-              <div class="delivery-option-date">Wednesday, June 15</div>
-              <div class="delivery-option-price">$4.99 - Shipping</div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input
-              type="radio"
-              class="delivery-option-input"
-              name="delivery-option-${matchingProduct.id}"
-              value = "9.99"
-            />
-            <div>
-              <div class="delivery-option-date">Monday, June 13</div>
-              <div class="delivery-option-price">$9.99 - Shipping</div>
-            </div>
+          ${deliveryOptionsHTML(matchingProduct, cartItem)}     
           </div>
         </div>
       </div>
@@ -263,3 +245,37 @@ const totalItemCost = () => {
 };
 
 totalItemCost();
+
+// function to generate delivery options html
+
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  let html = ``;
+  deliveryOptions.forEach((option) => {
+    const today = dayjs();
+    const deliveryDate = today.add(option.deliveryDays, "days");
+    const dateStr = deliveryDate.format(`dddd, MMMM, D`);
+    const priceStr =
+      option.priceCents === 0
+        ? `FREE SHIPPING`
+        : `$${option.priceCents / 100} - Shipping`;
+
+    const isChecked = option.id === cartItem.deliveryOptionId;
+
+    html += `
+    <div class="delivery-option">
+            <input
+              type="radio"
+              ${isChecked ? `checked` : ``}
+              class="delivery-option-input"
+              name="delivery-option-${matchingProduct.id}"
+
+            />
+            <div>
+              <div class="delivery-option-date">${dateStr}</div>
+              <div class="delivery-option-price">${priceStr}</div>
+            </div>
+    </div>
+    `;
+  });
+  return html;
+}
