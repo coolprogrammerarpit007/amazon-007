@@ -87,3 +87,21 @@ export const updateItemQtyFromCart = function (productId, qtyItemValue) {
 
   saveToStorage();
 };
+
+// ************************************
+// ************************************
+
+// function for updating delivery option to the cart
+
+export const shippingDelivery = function (productId, deliveryOptionId) {
+  cart.forEach((cartItem) => {
+    // if cart has the same productId then updte the deliveryId in the cart
+    if (cartItem.productId === productId) {
+      cartItem.deliveryOptionId = deliveryOptionId;
+    }
+  });
+
+  // Now storing cart to the local storage
+  saveToStorage(cart);
+  // console.log(cart);
+};
