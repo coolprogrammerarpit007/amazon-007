@@ -228,7 +228,10 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     const isChecked = option.id === cartItem.deliveryOptionId;
 
     html += `
-    <div class="delivery-option">
+    <div class="delivery-option js-delivery-option"
+    data-product-id="${matchingProduct.id}"
+    data-delivery-option-id="${option.id}"
+    >
             <input
               type="radio"
               ${isChecked ? `checked` : ``}
@@ -252,17 +255,20 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
 
 // selecting all shipping delivery options and  adding event listener to them
 
-const radioInput = document.querySelectorAll(`.delivery-option-input`);
+const radioInput = document.querySelectorAll(`.js-delivery-option`);
 
 radioInput.forEach((choice) => {
   choice.addEventListener(`change`, function (e) {
     // storing deliveryOptionId
-    let deliveryOptionId = choice.id;
+    // let deliveryOptionId = choice.id;
 
     // stooring the productId of the product
-    const productId = choice
-      .getAttribute(`name`)
-      .replace(`delivery-option-`, ``);
+    // const productId = choice
+    // .getAttribute(`name`)
+    // .replace(`delivery-option-`, ``);
+
+    // getting the productId and deliveryOptionId
+    const { productId, deliveryOptionId } = choice.dataset;
 
     // Now, a function shippingDelivery() wil be called to update shipping option to cart
 
@@ -275,13 +281,8 @@ radioInput.forEach((choice) => {
     // *******************************
 
     // Now updating the delivery date of product
-    const deliveryDate = document.querySelector(`.delivery-date-${productId}`);
-    const deliveryOptionDate = document.querySelector(
-      `.delivery-option-date-${deliveryOptionId}`
-    );
 
     // Updating delivery date
-    deliveryDate.textContent = `Delivery Date: ${deliveryOptionDate.textContent}`;
 
     // **********************************
     // **********************************

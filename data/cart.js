@@ -94,6 +94,7 @@ export const updateItemQtyFromCart = function (productId, qtyItemValue) {
 // function for updating delivery option to the cart
 
 export const shippingDelivery = function (productId, deliveryOptionId) {
+  console.log(`function to be called!`);
   cart.forEach((cartItem) => {
     // if cart has the same productId then updte the deliveryId in the cart
     if (cartItem.productId === productId) {
